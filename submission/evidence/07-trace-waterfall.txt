@@ -1,6 +1,6 @@
-trace_id=9bc83cd67744cf56680562e6431d829d
-correlation_id=req-c2a1a002
-root lab-agent-run (AGENT) observation_id=2c0b6b294f99a8b5 parent=None
-  retrieval (RETRIEVER) observation_id=759003590dc39c94 parent=2c0b6b294f99a8b5
-  generation (GENERATION) observation_id=006a02b17d5ab0e5 parent=2c0b6b294f99a8b5
-root/retrieval/generation input and output fields are empty.
+trace_id=4a6aaa48f77341159ed0fca78040bee3
+correlation_id=req-c4e5f6a7
+root lab-agent-run (AGENT) observation_id=305de83f57940369 parent=None duration=0.151s
+  retrieval (RETRIEVER) observation_id=38f7d0c0930254de parent=305de83f57940369 duration=0.0s
+  generation (GENERATION) observation_id=883044141899e0f8 parent=305de83f57940369 duration=0.15s
+Input/output fields empty on root and both children.

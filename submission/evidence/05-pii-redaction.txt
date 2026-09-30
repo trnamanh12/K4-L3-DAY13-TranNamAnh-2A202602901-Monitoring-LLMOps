@@ -1,4 +1,4 @@
-Synthetic chat input contained an email, Vietnamese phone, 12-digit CCCD, and 16-digit card number.
-The response retained the valid request ID req-c1a2b3e5; none of the raw test values appear in data/logs.jsonl.
-Redacted request log:
-{"service": "api", "payload": {"message_preview": "[REDACTED_EMAIL] [REDACTED_PHONE_VN] [REDACTED_CCCD] [REDACTED_CREDIT_CARD]"}, "event": "request_received", "env": "dev", "model": "claude-sonnet-4-5", "session_id": "cp1-pii-check", "correlation_id": "req-c1a2b3e5", "user_id_hash": "06307b701a7c", "feature": "qa", "level": "info", "ts": "2026-09-30T06:51:04.712314Z"}
+Synthetic PII test command (fake values):
+python -c "import httpx; r = httpx.post('http://127.0.0.1:8000/chat', json={'user_id':'demo','session_id':'demo-01','feature':'qa','message':'a@b.vn 0901234567 001099012345 4111 1111 1111 1111'}, headers={'x-request-id':'req-c4e5f6b8'}); print(r.status_code, r.headers.get('x-request-id'), r.headers.get('x-response-time-ms'))"
+Redacted log preview:
+{"service": "api", "payload": {"message_preview": "[REDACTED_EMAIL] [REDACTED_PHONE_VN] [REDACTED_CCCD] [REDACTED_CREDIT_CARD]"}, "event": "request_received", "feature": "qa", "user_id_hash": "c3a8027430b9", "model": "claude-sonnet-4-5", "env": "dev", "session_id": "cp4-pii-proof", "correlation_id": "req-c4e5f6b8", "level": "info", "ts": "2026-09-30T12:10:35.712247Z"}

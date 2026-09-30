@@ -1,12 +1,25 @@
-Official challenge: day13-k4-l3b-monitoring-llmops-v1
-baseline: correlation_id=req-0464f980 trace_id=bbfb5139ca4917f7cd0b5666a4a79227
-root lab-agent-run observation_id=ecb07a26d73c0016 duration=0.152s
-  retrieval (RETRIEVER) observation_id=7bb8e6c14b080fa9 duration=0.001s
-  generation (GENERATION) observation_id=fd8e909b44b9884c duration=0.151s model=claude-sonnet-4-5
-  prompt=day13-chat v1; usage={'input': 29, 'output': 106, 'total': 135}; cost={'input': 8.7e-05, 'output': 0.00159, 'total': 0.001677}
-challenge: correlation_id=req-600dcf2e trace_id=9ba62be0419b5ef0d10f61ac73ad7963
-root lab-agent-run observation_id=501b303fb5565d99 duration=2.652s
-  retrieval (RETRIEVER) observation_id=41fba0391029be18 duration=2.5s
-  generation (GENERATION) observation_id=8fa3057586381196 duration=0.151s model=claude-sonnet-4-5
-  prompt=day13-chat v1; usage={'input': 35, 'output': 150, 'total': 185}; cost={'input': 0.000104999999, 'output': 0.00225, 'total': 0.002355}
-Selected root/child input/output fields are empty; CP3 trace is linked by correlation_id.
+Official challenge traces; no input/output captured.
+baseline:
+req-0464f980 | trace_id=bbfb5139ca4917f7cd0b5666a4a79227 | root=ecb07a26d73c0016 | retrieval=7bb8e6c14b080fa9 | generation=fd8e909b44b9884c
+req-06236213 | trace_id=9910f2ba23ce05c69867801a7af6a7d6 | root=d4137f0efc566a1b | retrieval=bbce32e9e078eeb6 | generation=1fff64f0934aaa76
+req-4a8d522c | trace_id=ce6f6520b1e8159c1b1cd9d2ddc6c73c | root=c15b2875f40af0d8 | retrieval=a2a04125d0ab9ff1 | generation=b884370b2561586d
+req-854d75f8 | trace_id=c6cc29a4a43a12b1d9697767d939340b | root=b2bcc6151bb2cfd6 | retrieval=20b7ca74fba84515 | generation=d29fbdb6bb074eb6
+req-90c6b10f | trace_id=7c9a34844cb52bb96def9378da79a640 | root=4d4f6e40e9529ce8 | retrieval=ec7e85a56e29f930 | generation=7feaca184b5a98c0
+req-938c074a | trace_id=d65cbaed12542032b33e1a3c11a500fd | root=5f3687dc15eb4d52 | retrieval=eab56be5b730b977 | generation=93e09e175413dfbb
+req-964514f4 | trace_id=75a79be6b758a54237cfa01f56944802 | root=2b72bb06de4920f4 | retrieval=63b3b8038d1420f3 | generation=3dd0cb24aec36b9f
+req-a6c62400 | trace_id=2cd63cb7f92bdd9d0381a68a00805792 | root=14fde7a3432438f5 | retrieval=566a00765ab6d5f8 | generation=b40543c22e92c87c
+req-dc35fade | trace_id=813c8d6b4daa080872d2d87f427c61e6 | root=198e6e5aca039af7 | retrieval=55de990727e9c8e4 | generation=09f8eb61bf7a8ce9
+req-ec2978fe | trace_id=823c381bc8f9f4b2e82a9120d2fced36 | root=d153ff1c7cf13ec6 | retrieval=32620bac98fc10ff | generation=7b5e2f99865649b2
+challenge rag_slow:
+req-600dcf2e | trace_id=9ba62be0419b5ef0d10f61ac73ad7963 | root=501b303fb5565d99 | retrieval=41fba0391029be18 | generation=8fa3057586381196
+req-6192a17a | trace_id=3a35c73322459b94bf63c42f41a99973 | root=d478bb9a9cfb1094 | retrieval=66f315208c385b63 | generation=80aa0ed02adcdfb1
+req-7ac7376a | trace_id=9efc6d9eaa7d2464243982d35f2908ef | root=8d8f86a1dfedf28e | retrieval=8d551b6f1aea2ea8 | generation=0f7ba6ef37d1b9f7
+req-cee23905 | trace_id=f2940cd79e08adee5cae27a70933f987 | root=bc9b15b229cedfc4 | retrieval=79b67e22c06f42a2 | generation=f32b4e825e7ef6c7
+req-ecece6f6 | trace_id=c8d338a40009f849d3b9c95bf9169cad | root=2c89c16d9e100781 | retrieval=addd6498c90a7353 | generation=4b18c2ca611795a7
+
+Representative incident trace:
+correlation_id=req-600dcf2e; trace_id=9ba62be0419b5ef0d10f61ac73ad7963
+root duration=2.652s
+retrieval duration=2.5s
+generation duration=0.151s; model=claude-sonnet-4-5; usage={'input': 35, 'output': 150, 'total': 185}; cost={'input': 0.000104999999, 'output': 0.00225, 'total': 0.002355}
+root/retrieval/generation input/output fields are empty.

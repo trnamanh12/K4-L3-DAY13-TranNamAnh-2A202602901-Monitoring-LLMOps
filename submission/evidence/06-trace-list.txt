@@ -16,3 +16,6 @@ req-c2a1a001 | trace_id=1a0f733cb5f64666c6f1fdcc7e8d5d1c | prompt=day13-chat v1 
 req-c2a1a002 | trace_id=9bc83cd67744cf56680562e6431d829d | prompt=day13-chat v2 label=candidate
 req-c2a1a003 | trace_id=067e5d141b3d3d2f94324c88e4d9e7bd | prompt=day13-chat v2 label=production
 req-c2a1a004 | trace_id=9926caa500e35283f323ffd16ba6d106 | prompt=day13-chat v1 label=production
+
+CP4 cross-check request: req-c4e5f6a7 | trace_id=4a6aaa48f77341159ed0fca78040bee3 | prompt=day13-chat v1 label=production
+CP4 synthetic-PII proof: req-c4e5f6b8 | trace_id=9210364a163f3f188a30f5f7025008f5 | prompt=day13-chat v1 label=production

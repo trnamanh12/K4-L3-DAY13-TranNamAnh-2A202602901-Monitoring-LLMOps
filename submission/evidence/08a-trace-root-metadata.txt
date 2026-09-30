@@ -1,0 +1,8 @@
+trace_id=4a6aaa48f77341159ed0fca78040bee3
+correlation_id=req-c4e5f6a7
+prompt_name=day13-chat
+prompt_label=production
+prompt_version=1
+prompt_source=langfuse
+model=claude-sonnet-4-5
+input/output captured: no

@@ -1,0 +1,8 @@
+trace_id=4a6aaa48f77341159ed0fca78040bee3
+correlation_id=req-c4e5f6a7
+model=claude-sonnet-4-5
+prompt=day13-chat v1
+usage={'input': 25, 'output': 116, 'total': 141}
+cost={'input': 7.5e-05, 'output': 0.00174, 'total': 0.001815}
+latency=0.15s ttft=0.05s
+input/output captured: no
