@@ -1,16 +1,12 @@
-Challenge: day13-k4-l3b-monitoring-llmops-v1
-correlation_id=req-5960db20
-trace_id=5f069d236dd494d958ecf20dcf9e2a47
-root lab-agent-run observation_id=7796e19aeb28f9a6 duration=2.652s
-  retrieval (RETRIEVER) observation_id=54e6dcf3089be0b6 duration=2.5s
-  generation (GENERATION) observation_id=a8ce14515716a932 duration=0.151s model=claude-sonnet-4-5
-generation prompt=day13-chat version=1; usage={'input': 36, 'output': 146, 'total': 182}; cost={'input': 0.000108, 'output': 0.00219, 'total': 0.002298}
-root prompt source=langfuse; label=production; version=1
-root/retrieval/generation input and output fields are empty.
-Interpretation: retrieval consumed 2.5s of the 2.651s logged response; generation consumed about 0.151s.
-
-Additional first-run outlier (same official challenge, cold prompt cache):
-correlation_id=req-619c2299; trace_id=07253bdfc048340a118de9d9462935bb; root duration=9.052s.
-retrieval observation efb6b43aa8c7272b: 11:07:44.560–11:07:47.060 UTC (2.500s).
-generation observation e42bb2d0eeb04075: 11:07:53.460–11:07:53.611 UTC (0.151s).
-Uninstrumented gap between retrieval end and generation start: 6.400s; root metadata prompt_source=langfuse, prompt_fetch_error empty. The gap is consistent with a cold managed-prompt fetch; this is an inference.
+Official challenge: day13-k4-l3b-monitoring-llmops-v1
+baseline: correlation_id=req-0464f980 trace_id=bbfb5139ca4917f7cd0b5666a4a79227
+root lab-agent-run observation_id=ecb07a26d73c0016 duration=0.152s
+  retrieval (RETRIEVER) observation_id=7bb8e6c14b080fa9 duration=0.001s
+  generation (GENERATION) observation_id=fd8e909b44b9884c duration=0.151s model=claude-sonnet-4-5
+  prompt=day13-chat v1; usage={'input': 29, 'output': 106, 'total': 135}; cost={'input': 8.7e-05, 'output': 0.00159, 'total': 0.001677}
+challenge: correlation_id=req-600dcf2e trace_id=9ba62be0419b5ef0d10f61ac73ad7963
+root lab-agent-run observation_id=501b303fb5565d99 duration=2.652s
+  retrieval (RETRIEVER) observation_id=41fba0391029be18 duration=2.5s
+  generation (GENERATION) observation_id=8fa3057586381196 duration=0.151s model=claude-sonnet-4-5
+  prompt=day13-chat v1; usage={'input': 35, 'output': 150, 'total': 185}; cost={'input': 0.000104999999, 'output': 0.00225, 'total': 0.002355}
+Selected root/child input/output fields are empty; CP3 trace is linked by correlation_id.

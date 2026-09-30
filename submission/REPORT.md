@@ -42,8 +42,8 @@
 | `pytest` | | 25 passed | `.venv/bin/python -m pytest -q` |
 | Số traces hợp lệ | | 14 trace đã kiểm chứng | 10 load-test trace và 4 trace baseline/candidate/promote/rollback; đều có root + retrieval + generation. |
 | Số PII leak | 0 | 0 | Validator và isolated API run. |
-| Latency P95 / TTFT P95 | | 9,051 ms / 50 ms | 16 request trong cửa sổ 60 phút; dashboard gồm outlier cold-prompt của lượt challenge thăm dò đầu. |
-| Retrieval success rate | | 100% | 16/16 tool result thành công; incident làm chậm retrieval nhưng không làm retrieval fail. |
+| Latency P95 / TTFT P95 | | 2,651 ms / 50 ms | 15 request trong log CP3 sạch: 10 baseline và 5 challenge. |
+| Retrieval success rate | | 100% | 15/15 tool result thành công; incident làm chậm retrieval nhưng không làm retrieval fail. |
 
 ## 4. Logging và PII
 
@@ -77,11 +77,11 @@
 ## 7. Điều tra challenge
 
 - **Challenge ID:** `day13-k4-l3b-monitoring-llmops-v1` (cohort K4; dùng file chính thức từ Lab Coach, không commit file challenge).
-- **Khoảng thời gian điều tra:** Baseline 11:11:54–11:11:55 UTC; incident 11:12:11–11:12:25 UTC.
-- **Triệu chứng từ metrics:** 5 baseline request có latency P95 151 ms; 5 request khi `rag_slow` bật có P95 2,653 ms, cả 5 đều vượt challenge threshold 2,000 ms. Retrieval success 5/5, error 0. Xem [incident metrics](evidence/12-incident-metric.txt) và [dashboard snapshot](evidence/12-incident-metric.png).
+- **Khoảng thời gian điều tra:** Baseline 11:49:55–11:49:56 UTC; incident 11:50:04–11:50:17 UTC.
+- **Triệu chứng từ metrics:** 10 baseline request có latency P95 151 ms; 5 request khi `rag_slow` bật có P95 2,651 ms, cả 5 đều vượt challenge threshold 2,000 ms. Retrieval success 5/5, error 0. Xem [incident metrics](evidence/12-incident-metric.txt) và [dashboard snapshot](evidence/12-incident-metric.png).
 - **Log line và correlation ID liên quan:** `response_sent` cho `req-5960db20` ghi `latency_ms=2651`, `tool_success=true`; log baseline/incident có trong [incident log](evidence/13-incident-log.txt).
 - **Trace ID và span gây ảnh hưởng:** Trace `5f069d236dd494d958ecf20dcf9e2a47`, cùng `correlation_id=req-5960db20`. Span `retrieval` mất 2.500 s, generation mất 0.151 s; xem [incident trace](evidence/14-incident-trace.txt).
-- **Root cause:** Incident challenge bật `rag_slow`, làm `retrieve()` thêm 2.5 giây; trace cho thấy thời gian chủ yếu nằm ở retrieval, còn generation giữ khoảng 0.15 giây. Lần chạy thăm dò đầu có một outlier 9.052 s với khoảng trống 6.4 giây trước generation; trace báo prompt source Langfuse nhưng không có fetch error, nên đây có thể là chi phí cold prompt fetch và được xem là yếu tố phụ.
+- **Root cause:** Incident challenge bật `rag_slow`, làm `retrieve()` thêm 2.5 giây; trace so sánh baseline/challenge cho thấy retrieval tăng từ khoảng 1 ms lên 2.5 s, còn generation giữ khoảng 0.15 giây. Một lượt thăm dò trước khi làm sạch log có outlier cold-prompt; lượt đó không nằm trong baseline/challenge CP3 sạch ở trên.
 - **Fix action:** Tắt incident sau khi thu thập bằng `python scripts/inject_incident.py --disable`; `/health` xác nhận cả ba incident đều `false`.
 - **Preventive measure:** Hạ alert `HighLatencyP95` xuống >2,000 ms trong 5 phút (baseline CP3 P95 151 ms) để cảnh báo trước SLO 3,000 ms; runbook yêu cầu nối dashboard → correlation ID trong log → trace retrieval/generation.
 

@@ -1,15 +1,20 @@
 Challenge: day13-k4-l3b-monitoring-llmops-v1
-Window: 2026-09-30T11:12:11.946080Z to 2026-09-30T11:12:25.218172Z UTC
-Matched baseline and incident response log fields:
+Challenge window: 2026-09-30T11:50:04.122963Z to 2026-09-30T11:50:17.400256Z UTC
+response_sent fields for clean baseline and official challenge requests:
 baseline:
-{"ts": "2026-09-30T11:11:54.881359Z", "event": "response_sent", "correlation_id": "req-57f58752", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:11:55.034066Z", "event": "response_sent", "correlation_id": "req-22df3a17", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:11:55.186457Z", "event": "response_sent", "correlation_id": "req-dfb25264", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:11:55.339688Z", "event": "response_sent", "correlation_id": "req-f3ba6874", "feature": "monitoring", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:11:55.491958Z", "event": "response_sent", "correlation_id": "req-ccfb8409", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
-incident:
-{"ts": "2026-09-30T11:12:14.598492Z", "event": "response_sent", "correlation_id": "req-5960db20", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:12:17.253771Z", "event": "response_sent", "correlation_id": "req-8f379d06", "feature": "monitoring", "latency_ms": 2653, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:12:19.908600Z", "event": "response_sent", "correlation_id": "req-8f7be26e", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:12:22.563124Z", "event": "response_sent", "correlation_id": "req-8adf801a", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}
-{"ts": "2026-09-30T11:12:25.218172Z", "event": "response_sent", "correlation_id": "req-ae4c8c05", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:55.457837Z", "event": "response_sent", "correlation_id": "req-dc35fade", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:55.612955Z", "event": "response_sent", "correlation_id": "req-854d75f8", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:55.767698Z", "event": "response_sent", "correlation_id": "req-938c074a", "feature": "summary", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:55.922086Z", "event": "response_sent", "correlation_id": "req-964514f4", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.076295Z", "event": "response_sent", "correlation_id": "req-06236213", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.229839Z", "event": "response_sent", "correlation_id": "req-a6c62400", "feature": "summary", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.384302Z", "event": "response_sent", "correlation_id": "req-0464f980", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.538462Z", "event": "response_sent", "correlation_id": "req-ec2978fe", "feature": "qa", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.691870Z", "event": "response_sent", "correlation_id": "req-4a8d522c", "feature": "qa", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:49:56.845279Z", "event": "response_sent", "correlation_id": "req-90c6b10f", "feature": "qa", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+challenge:
+{"ts": "2026-09-30T11:50:06.775345Z", "event": "response_sent", "correlation_id": "req-600dcf2e", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:50:09.428191Z", "event": "response_sent", "correlation_id": "req-cee23905", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:50:12.088445Z", "event": "response_sent", "correlation_id": "req-6192a17a", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:50:14.740588Z", "event": "response_sent", "correlation_id": "req-ecece6f6", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:50:17.400256Z", "event": "response_sent", "correlation_id": "req-7ac7376a", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
