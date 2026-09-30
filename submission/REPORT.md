@@ -18,11 +18,11 @@
 
 | Evidence | Đường dẫn |
 |---|---|
-| Pytest cuối | `evidence/01-pytest.png` |
-| Log validator | `evidence/02-log-validator.png` |
+| Pytest cuối | `evidence/01-pytest.txt` |
+| Log validator | `evidence/02-log-validator.txt` |
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
-| Structured log | `evidence/04-structured-log.png` |
-| PII redaction | `evidence/05-pii-redaction.png` |
+| Structured log | `evidence/04-structured-log.txt` |
+| PII redaction | `evidence/05-pii-redaction.txt` |
 | Trace list | `evidence/06-trace-list.png` |
 | Trace waterfall | `evidence/07-trace-waterfall.png` |
 | Trace metadata | `evidence/08-trace-metadata.png` |
@@ -37,20 +37,20 @@
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | | | |
+| `validate_logs.py` | 30/100 (`data/logs_baseline.jsonl`) | 100/100 | API runtime logs have required metadata and no detected PII. |
 | `validate_dashboard.py` | | | |
-| `pytest` | | | |
+| `pytest` | | 24 passed | `.venv/bin/python -m pytest -q` |
 | Số traces hợp lệ | | | |
-| Số PII leak | | | |
+| Số PII leak | 0 | 0 | Validator và isolated API run. |
 | Latency P95 / TTFT P95 | | | |
 | Retrieval success rate | | | |
 
 ## 4. Logging và PII
 
-- **Cách tạo/nhận và truyền correlation ID:**
-- **Các metadata được ghi vào structured log:**
-- **Cách bảo đảm PII được scrub trước khi ghi:**
-- **Cách kiểm chứng kết quả:**
+- **Cách tạo/nhận và truyền correlation ID:** Middleware xóa context cũ, nhận `x-request-id` nếu khớp `req-<8 hex>` hoặc tạo ID mới, rồi bind ID vào contextvars. ID cũng có trong response header và body `/chat`.
+- **Các metadata được ghi vào structured log:** `user_id_hash` (SHA-256 rút gọn), `session_id`, `feature`, `model`, `env`; middleware thêm `correlation_id`.
+- **Cách bảo đảm PII được scrub trước khi ghi:** `scrub_event` chạy trước file writer và JSON renderer, đệ quy qua các chuỗi trong event; các pattern scrub email, điện thoại Việt Nam, CCCD 12 số và thẻ 16 số.
+- **Cách kiểm chứng kết quả:** `validate_logs.py` đạt 100/100; isolated TestClient gửi ID hợp lệ và ID không hợp lệ cùng input PII tổng hợp, xác nhận ID phản hồi đúng format và log không chứa giá trị PII nguyên văn. Xem [validator](evidence/02-log-validator.txt), [structured log](evidence/04-structured-log.txt) và [PII redaction](evidence/05-pii-redaction.txt).
 
 ## 5. Tracing và prompt versioning
 
