@@ -1,5 +1,7 @@
-POST /chat response verified: x-request-id header and correlation_id body match req-c1a2b3d4.
-Matching structured API events:
-{"service": "api", "payload": {"message_preview": "What is your refund policy? My email is [REDACTED_EMAIL]"}, "event": "request_received", "env": "dev", "model": "claude-sonnet-4-5", "session_id": "s01", "correlation_id": "req-c1a2b3d4", "user_id_hash": "2055254ee30a", "feature": "qa", "level": "info", "ts": "2026-09-30T06:50:11.248619Z"}
-{"service": "api", "latency_ms": 151, "ttft_ms": 50, "tokens_in": 36, "tokens_out": 150, "cost_usd": 0.002358, "quality_score": 0.9, "tool_name": "retrieval", "tool_success": true, "payload": {"answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."}, "event": "response_sent", "env": "dev", "model": "claude-sonnet-4-5", "session_id": "s01", "correlation_id": "req-c1a2b3d4", "user_id_hash": "2055254ee30a", "feature": "qa", "level": "info", "ts": "2026-09-30T06:50:11.400560Z"}
-Langfuse trace verified: trace_id=a13f057ac80548ed785b289a487d7b17, root correlation_id=req-c1a2b3d4, children=retrieval,generation.
+Request evidence command:
+python -c "import httpx; r = httpx.post('http://127.0.0.1:8000/chat', json={'user_id':'demo','session_id':'demo-01','feature':'qa','message':'Explain traces'}, headers={'x-request-id':'req-c4e5f6a7'}); print(r.status_code, r.headers.get('x-request-id'), r.headers.get('x-response-time-ms'))"
+Response: HTTP 200; x-request-id=req-c4e5f6a7; correlation_id body matches.
+Matching sanitized structured events:
+{"ts": "2026-09-30T12:04:56.178128Z", "event": "request_received", "service": "api", "correlation_id": "req-c4e5f6a7", "user_id_hash": "44ff96cc8945", "session_id": "cp4-correlation-proof", "feature": "qa", "model": "claude-sonnet-4-5", "env": "dev"}
+{"ts": "2026-09-30T12:04:56.329779Z", "event": "response_sent", "service": "api", "correlation_id": "req-c4e5f6a7", "user_id_hash": "44ff96cc8945", "session_id": "cp4-correlation-proof", "feature": "qa", "model": "claude-sonnet-4-5", "env": "dev", "latency_ms": 150, "ttft_ms": 50}
+Langfuse root trace_id=4a6aaa48f77341159ed0fca78040bee3; root correlation_id=req-c4e5f6a7

@@ -1,7 +1,7 @@
 alerts:
   - name: HighLatencyP95
     severity: warning
-    condition: p95(response_sent.latency_ms) > 3000 ms
+    condition: p95(response_sent.latency_ms) > 2000 ms
     duration: 5m
     type: symptom-based
     channel: slack:#k4-l3b-alerts
