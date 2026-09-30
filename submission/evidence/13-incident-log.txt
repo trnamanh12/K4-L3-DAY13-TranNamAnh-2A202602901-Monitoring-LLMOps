@@ -1,0 +1,15 @@
+Challenge: day13-k4-l3b-monitoring-llmops-v1
+Window: 2026-09-30T11:12:11.946080Z to 2026-09-30T11:12:25.218172Z UTC
+Matched baseline and incident response log fields:
+baseline:
+{"ts": "2026-09-30T11:11:54.881359Z", "event": "response_sent", "correlation_id": "req-57f58752", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:11:55.034066Z", "event": "response_sent", "correlation_id": "req-22df3a17", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:11:55.186457Z", "event": "response_sent", "correlation_id": "req-dfb25264", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:11:55.339688Z", "event": "response_sent", "correlation_id": "req-f3ba6874", "feature": "monitoring", "latency_ms": 151, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:11:55.491958Z", "event": "response_sent", "correlation_id": "req-ccfb8409", "feature": "monitoring", "latency_ms": 150, "ttft_ms": 50, "tool_success": true}
+incident:
+{"ts": "2026-09-30T11:12:14.598492Z", "event": "response_sent", "correlation_id": "req-5960db20", "feature": "monitoring", "latency_ms": 2651, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:12:17.253771Z", "event": "response_sent", "correlation_id": "req-8f379d06", "feature": "monitoring", "latency_ms": 2653, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:12:19.908600Z", "event": "response_sent", "correlation_id": "req-8f7be26e", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:12:22.563124Z", "event": "response_sent", "correlation_id": "req-8adf801a", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}
+{"ts": "2026-09-30T11:12:25.218172Z", "event": "response_sent", "correlation_id": "req-ae4c8c05", "feature": "monitoring", "latency_ms": 2652, "ttft_ms": 50, "tool_success": true}

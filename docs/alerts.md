@@ -26,9 +26,9 @@ Ví dụ dưới đây minh họa mức độ cụ thể cần có. Học viên 
 - Severity: `warning`
 - Duration: `5m`
 - Kênh thông báo: Slack `#k4-l3b-alerts`
-- SLI/SLO liên quan: `fast_successful_requests`, latency P95 dưới 3,000 ms.
-- Điều kiện và thời gian duy trì: `p95(response_sent.latency_ms) > 3000 ms` trong 5 phút.
-- Ảnh hưởng tới người dùng: câu trả lời đến muộn; khi latency vượt 3,000 ms, request không đạt SLO.
+- SLI/SLO liên quan: `fast_successful_requests`, SLO latency tối đa 3,000 ms; alert cảnh báo sớm ở 2,000 ms.
+- Điều kiện và thời gian duy trì: `p95(response_sent.latency_ms) > 2000 ms` trong 5 phút.
+- Ảnh hưởng tới người dùng: câu trả lời chậm hơn baseline; nếu tiếp tục vượt 3,000 ms, request không đạt SLO.
 - Ba bước kiểm tra đầu tiên:
   1. Xác nhận P95/P99 và TTFT P95 trong dashboard, giữ cùng time range 60 phút.
   2. Lọc `response_sent` trong `data/logs.jsonl`, lấy request có latency cao và `correlation_id`.

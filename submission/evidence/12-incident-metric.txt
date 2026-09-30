@@ -1,0 +1,6 @@
+Official challenge day13-k4-l3b-monitoring-llmops-v1 (K4); incident=rag_slow; feature=monitoring; threshold=2000 ms.
+Window: 2026-09-30T11:12:11.946080Z to 2026-09-30T11:12:25.218172Z UTC; baseline: 5 requests, P95=151 ms, values=[150, 150, 150, 150, 151].
+Incident: 5 requests, P95=2653 ms, values=[2651, 2652, 2652, 2652, 2653]; 5/5 exceeded threshold; retrieval success=5/5; errors=0.
+Latency P95 increased 17.6x against the matched baseline.
+
+Dashboard 60-minute window captured after both runs: 16 requests; P95=9051 ms, P99=9051 ms, TTFT P95=50 ms, error rate=0%, retrieval success=100%. The 9051 ms value is from the first exploratory challenge request; see the cold-prompt timing note in 14-incident-trace.txt. The matched warmed baseline vs incident comparison above isolates the official rag_slow effect.

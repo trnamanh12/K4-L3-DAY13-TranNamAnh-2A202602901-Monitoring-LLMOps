@@ -30,8 +30,8 @@
 | Prompt rollback | `evidence/10-prompt-rollback.txt` |
 | Dashboard runtime | `evidence/11-dashboard-overview.png` |
 | Incident metric | `evidence/12-incident-metric.png` |
-| Incident log | `evidence/13-incident-log.png` |
-| Incident trace | `evidence/14-incident-trace.png` |
+| Incident log | `evidence/13-incident-log.txt` |
+| Incident trace | `evidence/14-incident-trace.txt` |
 
 ## 3. Kết quả kỹ thuật
 
@@ -42,8 +42,8 @@
 | `pytest` | | 25 passed | `.venv/bin/python -m pytest -q` |
 | Số traces hợp lệ | | 14 trace đã kiểm chứng | 10 load-test trace và 4 trace baseline/candidate/promote/rollback; đều có root + retrieval + generation. |
 | Số PII leak | 0 | 0 | Validator và isolated API run. |
-| Latency P95 / TTFT P95 | | 1,160 ms / 50 ms | 26 request trong cửa sổ 60 phút. |
-| Retrieval success rate | | 100% | 26/26 tool result thành công trong cửa sổ đo. |
+| Latency P95 / TTFT P95 | | 9,051 ms / 50 ms | 16 request trong cửa sổ 60 phút; dashboard gồm outlier cold-prompt của lượt challenge thăm dò đầu. |
+| Retrieval success rate | | 100% | 16/16 tool result thành công; incident làm chậm retrieval nhưng không làm retrieval fail. |
 
 ## 4. Logging và PII
 
@@ -70,20 +70,20 @@
 ![Dashboard overview](evidence/11-dashboard-overview.png)
 - **SLO và lý do chọn:** `fast_successful_requests` mục tiêu 99.5% trong 28 ngày, latency tối đa 3,000 ms. CP1 baseline có P95 950 ms và TTFT P95 50 ms trên 10 response; 3,000 ms giữ khoảng đệm cho tail latency. Chi tiết: `config/slo.yaml`.
 - **Cách tính error budget:** 100% − 99.5% = 0.5%; trên 10,000 request trong 28 ngày, tối đa 50 request được phép lỗi hoặc vượt 3,000 ms.
-- **Ba alert và runbook tương ứng:** `HighLatencyP95` (>3,000 ms/5m), `RequestErrorsOrRetrievalFailures` (error >2% hoặc retrieval success <90%/5m), `DailyCostBudget` (daily cost >2.50 USD/10m). Cả ba gửi Slack `#k4-l3b-alerts`; runbook tại [docs/alerts.md](../docs/alerts.md).
+- **Ba alert và runbook tương ứng:** `HighLatencyP95` (>2,000 ms/5m, cảnh báo sớm trước SLO 3,000 ms), `RequestErrorsOrRetrievalFailures` (error >2% hoặc retrieval success <90%/5m), `DailyCostBudget` (daily cost >2.50 USD/10m). Cả ba gửi Slack `#k4-l3b-alerts`; runbook tại [docs/alerts.md](../docs/alerts.md).
 
 > Ví dụ cách viết error budget: "SLO 99.5% trong 28 ngày nghĩa là error budget 0.5%. Nếu workload có 10,000 request thì tối đa 50 request được phép lỗi hoặc chậm hơn ngưỡng SLO."
 
 ## 7. Điều tra challenge
 
-- **Challenge ID:**
-- **Khoảng thời gian điều tra:**
-- **Triệu chứng từ metrics:**
-- **Log line và correlation ID liên quan:**
-- **Trace ID và span gây ảnh hưởng:**
-- **Root cause:**
-- **Fix action:**
-- **Preventive measure:**
+- **Challenge ID:** `day13-k4-l3b-monitoring-llmops-v1` (cohort K4; dùng file chính thức từ Lab Coach, không commit file challenge).
+- **Khoảng thời gian điều tra:** Baseline 11:11:54–11:11:55 UTC; incident 11:12:11–11:12:25 UTC.
+- **Triệu chứng từ metrics:** 5 baseline request có latency P95 151 ms; 5 request khi `rag_slow` bật có P95 2,653 ms, cả 5 đều vượt challenge threshold 2,000 ms. Retrieval success 5/5, error 0. Xem [incident metrics](evidence/12-incident-metric.txt) và [dashboard snapshot](evidence/12-incident-metric.png).
+- **Log line và correlation ID liên quan:** `response_sent` cho `req-5960db20` ghi `latency_ms=2651`, `tool_success=true`; log baseline/incident có trong [incident log](evidence/13-incident-log.txt).
+- **Trace ID và span gây ảnh hưởng:** Trace `5f069d236dd494d958ecf20dcf9e2a47`, cùng `correlation_id=req-5960db20`. Span `retrieval` mất 2.500 s, generation mất 0.151 s; xem [incident trace](evidence/14-incident-trace.txt).
+- **Root cause:** Incident challenge bật `rag_slow`, làm `retrieve()` thêm 2.5 giây; trace cho thấy thời gian chủ yếu nằm ở retrieval, còn generation giữ khoảng 0.15 giây. Lần chạy thăm dò đầu có một outlier 9.052 s với khoảng trống 6.4 giây trước generation; trace báo prompt source Langfuse nhưng không có fetch error, nên đây có thể là chi phí cold prompt fetch và được xem là yếu tố phụ.
+- **Fix action:** Tắt incident sau khi thu thập bằng `python scripts/inject_incident.py --disable`; `/health` xác nhận cả ba incident đều `false`.
+- **Preventive measure:** Hạ alert `HighLatencyP95` xuống >2,000 ms trong 5 phút (baseline CP3 P95 151 ms) để cảnh báo trước SLO 3,000 ms; runbook yêu cầu nối dashboard → correlation ID trong log → trace retrieval/generation.
 
 > Gợi ý cách viết ngắn, không thay cho evidence thực tế: "Metric cho thấy `[latency/error/cost/quality]` bất thường trong `[khoảng thời gian]`. Log line `[event]` có `correlation_id=[...]` đại diện cho request bị ảnh hưởng. Trace cùng `correlation_id` cho thấy span `[retrieval/generation/prompt/tool]` có dấu hiệu `[chậm/lỗi/token tăng]`. Root cause là `[nguyên nhân suy ra từ evidence]`. Fix action là `[hành động khôi phục]`; preventive measure là `[alert/runbook/test/guardrail để ngăn tái diễn]`."
 
