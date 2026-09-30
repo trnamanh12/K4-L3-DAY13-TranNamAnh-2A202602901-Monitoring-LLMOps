@@ -1,0 +1,2 @@
+day13-chat v1: type=text, variables=feature/docs/message, labels=baseline,production
+day13-chat v2: type=text, variables=feature/docs/message, labels=candidate,latest

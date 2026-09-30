@@ -1,3 +1,4 @@
-Synthetic test input included an email, Vietnamese phone, 12-digit CCCD, and 16-digit card number.
-No raw values were found in the generated log. Redacted request log:
-{"service": "api", "payload": {"message_preview": "Email [REDACTED_EMAIL], phone [REDACTED_PHONE_VN], CCCD [REDACTED_CCCD], card [R..."}, "event": "request_received", "env": "dev", "user_id_hash": "616bb35d31d0", "correlation_id": "req-a1b2c3d4", "session_id": "session-demo", "feature": "qa", "model": "claude-sonnet-4-5", "level": "info", "ts": "2026-09-30T05:37:37.836894Z"}
+Synthetic chat input contained an email, Vietnamese phone, 12-digit CCCD, and 16-digit card number.
+The response retained the valid request ID req-c1a2b3e5; none of the raw test values appear in data/logs.jsonl.
+Redacted request log:
+{"service": "api", "payload": {"message_preview": "[REDACTED_EMAIL] [REDACTED_PHONE_VN] [REDACTED_CCCD] [REDACTED_CREDIT_CARD]"}, "event": "request_received", "env": "dev", "model": "claude-sonnet-4-5", "session_id": "cp1-pii-check", "correlation_id": "req-c1a2b3e5", "user_id_hash": "06307b701a7c", "feature": "qa", "level": "info", "ts": "2026-09-30T06:51:04.712314Z"}

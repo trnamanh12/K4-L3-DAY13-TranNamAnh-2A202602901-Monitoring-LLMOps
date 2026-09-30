@@ -1,0 +1,9 @@
+trace_id=9bc83cd67744cf56680562e6431d829d
+correlation_id=req-c2a1a002
+root prompt=day13-chat version=2 label=candidate source=langfuse
+generation model=claude-sonnet-4-5
+generation prompt=day13-chat version=2
+usage={'input': 53, 'output': 169, 'total': 222}
+cost_usd={'input': 0.000159, 'output': 0.002535, 'total': 0.002693999999}
+latency_seconds=0.151 ttft_seconds=0.05
+input/output captured: no

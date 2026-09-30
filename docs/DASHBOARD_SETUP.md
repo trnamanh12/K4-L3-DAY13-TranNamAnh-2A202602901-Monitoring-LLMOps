@@ -4,18 +4,18 @@
 
 Trường `query` trong YAML là pseudocode mô tả phép tính, không phải câu lệnh để copy nguyên vào mọi công cụ. Bạn chuyển cùng logic đó sang cú pháp của công cụ đã chọn.
 
-Lab không bắt buộc một công cụ dashboard cụ thể. Bạn có thể dùng Streamlit, notebook, Grafana, script local tạo biểu đồ hoặc công cụ tương đương. Điều quan trọng khi chấm là dashboard runtime có dữ liệu thật từ `data/logs.jsonl`, đủ sáu panel, đọc được time range/đơn vị/threshold và khớp logic trong `config/dashboard.yaml`.
+Lab không bắt buộc một công cụ dashboard cụ thể. Bạn có thể dùng Streamlit, notebook, Grafana, script local tạo biểu đồ hoặc công cụ tương đương. Điều quan trọng khi chấm là dashboard runtime có dữ liệu thật từ `data/logs.jsonl`, đủ sáu panel có chuỗi theo phút, đường threshold, time range và đơn vị và khớp logic trong `config/dashboard.yaml`.
 
 ## Mapping dữ liệu
 
 | Panel | Event/field | Phép tổng hợp |
 |---|---|---|
-| Latency | `response_sent.latency_ms/ttft_ms` | latency P50/P95/P99 và TTFT P95 |
-| Traffic | `request_received` | count, request/phút |
-| Errors | `request_received`, `request_failed`, `error_type`, `tool_success` | error rate, breakdown và retrieval success |
-| Cost | `response_sent.cost_usd` | tổng theo phút và toàn cửa sổ |
-| Tokens | `response_sent.tokens_in/tokens_out` | tổng theo từng field |
-| Quality | `response_sent.quality_score` | mean |
+| Latency | `response_sent.latency_ms/ttft_ms` | latency P50/P95/P99 và TTFT P95 theo phút |
+| Traffic | `request_received` | request count theo phút và request/phút |
+| Errors | `request_received`, `request_failed`, `response_sent`, `error_type`, `tool_success` | error rate, breakdown và retrieval success |
+| Cost | `response_sent.cost_usd` | cost lũy kế theo phút và toàn cửa sổ |
+| Tokens | `response_sent.tokens_in/tokens_out` | token lũy kế theo phút và tổng theo từng field |
+| Quality | `response_sent.quality_score` | mean theo phút và toàn cửa sổ |
 
 Giữ time range mặc định 60 phút, refresh 30 giây và hiển thị threshold/SLO line. Giá trị chính xác nằm trong `config/dashboard.yaml`; không tự đổi contract chỉ để ảnh dashboard đẹp hơn.
 
@@ -23,7 +23,7 @@ Giữ time range mặc định 60 phút, refresh 30 giây và hiển thị thres
 
 1. Hoàn thiện logging/PII và chạy API.
 2. Chạy `python scripts/load_test.py --concurrency 5` để tạo baseline.
-3. Dùng `data/logs.jsonl` làm nguồn chuẩn để tạo đúng sáu panel bằng Streamlit, notebook, Grafana hoặc công cụ tương đương. Langfuse vẫn là nơi mở trace/prompt version để điều tra sâu.
+3. Chạy `python scripts/dashboard.py` để mở dashboard local sáu panel từ `data/logs.jsonl`. Langfuse vẫn là nơi mở trace/prompt version để điều tra sâu.
 4. Đặt tên panel, đơn vị và threshold giống contract.
 5. Chạy validator:
 

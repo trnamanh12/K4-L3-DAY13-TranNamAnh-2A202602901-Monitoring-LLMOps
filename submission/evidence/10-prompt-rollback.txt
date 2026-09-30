@@ -1,0 +1,6 @@
+Production label promotion and rollback, verified after API restarts:
+baseline v1: req-c2a1a001 -> trace 1a0f733cb5f64666c6f1fdcc7e8d5d1c
+candidate v2: req-c2a1a002 -> trace 9bc83cd67744cf56680562e6431d829d
+production v2 after promote: req-c2a1a003 -> trace 067e5d141b3d3d2f94324c88e4d9e7bd
+production v1 after rollback: req-c2a1a004 -> trace 9926caa500e35283f323ffd16ba6d106
+final label resolution: production -> v1

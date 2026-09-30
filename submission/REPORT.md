@@ -10,7 +10,7 @@
 - **Repository URL:**
 - **Commit SHA cuối:**
 - **Challenge ID:**
-- **Tên project Langfuse cá nhân:** `day13-k4-l3b-<MSSV>`
+- **Tên project Langfuse cá nhân:** `day13-k4-l3b-2A202602901`.
 
 ## 2. Evidence index
 
@@ -20,14 +20,14 @@
 |---|---|
 | Pytest cuối | `evidence/01-pytest.txt` |
 | Log validator | `evidence/02-log-validator.txt` |
-| Dashboard validator | `evidence/03-dashboard-validator.png` |
+| Dashboard validator | `evidence/03-dashboard-validator.txt` |
 | Structured log | `evidence/04-structured-log.txt` |
 | PII redaction | `evidence/05-pii-redaction.txt` |
-| Trace list | `evidence/06-trace-list.png` |
-| Trace waterfall | `evidence/07-trace-waterfall.png` |
-| Trace metadata | `evidence/08-trace-metadata.png` |
-| Prompt versions | `evidence/09-prompt-versions.png` |
-| Prompt rollback | `evidence/10-prompt-rollback.png` |
+| Trace list | `evidence/06-trace-list.txt` |
+| Trace waterfall | `evidence/07-trace-waterfall.txt` |
+| Trace metadata | `evidence/08-trace-metadata.txt` |
+| Prompt versions | `evidence/09-prompt-versions.txt` |
+| Prompt rollback | `evidence/10-prompt-rollback.txt` |
 | Dashboard runtime | `evidence/11-dashboard-overview.png` |
 | Incident metric | `evidence/12-incident-metric.png` |
 | Incident log | `evidence/13-incident-log.png` |
@@ -38,12 +38,12 @@
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
 | `validate_logs.py` | 30/100 (`data/logs_baseline.jsonl`) | 100/100 | API runtime logs have required metadata and no detected PII. |
-| `validate_dashboard.py` | | | |
-| `pytest` | | 24 passed | `.venv/bin/python -m pytest -q` |
-| Số traces hợp lệ | | | |
+| `validate_dashboard.py` | | 6/6 panel | Runtime page lấy dữ liệu từ `data/logs.jsonl`, time range 60 phút, refresh 30 giây. |
+| `pytest` | | 25 passed | `.venv/bin/python -m pytest -q` |
+| Số traces hợp lệ | | 14 trace đã kiểm chứng | 10 load-test trace và 4 trace baseline/candidate/promote/rollback; đều có root + retrieval + generation. |
 | Số PII leak | 0 | 0 | Validator và isolated API run. |
-| Latency P95 / TTFT P95 | | | |
-| Retrieval success rate | | | |
+| Latency P95 / TTFT P95 | | 1,160 ms / 50 ms | 26 request trong cửa sổ 60 phút. |
+| Retrieval success rate | | 100% | 26/26 tool result thành công trong cửa sổ đo. |
 
 ## 4. Logging và PII
 
@@ -54,21 +54,23 @@
 
 ## 5. Tracing và prompt versioning
 
-- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:**
-- **Cấu trúc root/retrieval/generation observations:**
-- **Cách nối trace với log:**
-- **Prompt name:**
-- **Version/label baseline:**
-- **Version/label candidate:**
-- **Trace ID của mỗi version:**
-- **Cách promote và rollback `production`:**
+- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** Project `day13-k4-l3b-2A202602901` đã được xác nhận qua Langfuse API. 10 trace từ `scripts/load_test.py --concurrency 5` và 4 trace cho baseline/candidate/promote/rollback đều có đúng cây observations; xem [trace list](evidence/06-trace-list.txt).
+- **Cấu trúc root/retrieval/generation observations:** Root `lab-agent-run` có hai child observations dùng `@observe`: `retrieval` loại `RETRIEVER` và `generation` loại `GENERATION`. Cả ba decorator đều tắt capture input/output. Generation lưu prompt link, model, usage, cost và TTFT; xem [waterfall](evidence/07-trace-waterfall.txt) và [metadata](evidence/08-trace-metadata.txt).
+- **Cách nối trace với log:** Cùng `correlation_id` nằm trong root metadata và structured log; v2 observation API xác nhận cùng trace có root cùng hai child.
+- **Prompt name:** `day13-chat`.
+- **Version/label baseline:** v1, labels `baseline` và `production` ở trạng thái cuối.
+- **Version/label candidate:** v2, label `candidate`.
+- **Trace ID của mỗi version:** baseline v1 `1a0f733cb5f64666c6f1fdcc7e8d5d1c`; candidate v2 `9bc83cd67744cf56680562e6431d829d`; production v2 trước rollback `067e5d141b3d3d2f94324c88e4d9e7bd`; production v1 sau rollback `9926caa500e35283f323ffd16ba6d106`.
+- **Cách promote và rollback `production`:** Đổi label trong Langfuse SDK v4, restart API ở mỗi trạng thái và gửi cùng input. Production đã được kiểm tra trên v2 rồi rollback về v1. Chi tiết: [prompt versions](evidence/09-prompt-versions.txt) và [rollback](evidence/10-prompt-rollback.txt).
 
 ## 6. Dashboard, SLO và alerts
 
-- **Dashboard và sáu panel:**
-- **SLO và lý do chọn:**
-- **Cách tính error budget:**
-- **Ba alert và runbook tương ứng:**
+- **Dashboard và sáu panel:** Chạy `python scripts/dashboard.py`, mở `http://127.0.0.1:8001`. Dashboard local refresh 30 giây, lấy log trong 60 phút và vẽ chuỗi theo phút cùng threshold line cho latency P50/P95/P99 + TTFT P95, traffic, error/retrieval success, cost, tokens và quality. Contract: `config/dashboard.yaml`; [ảnh dashboard](evidence/11-dashboard-overview.png) và [runtime metrics](evidence/11-dashboard-runtime.json); validator: [6/6](evidence/03-dashboard-validator.txt).
+
+![Dashboard overview](evidence/11-dashboard-overview.png)
+- **SLO và lý do chọn:** `fast_successful_requests` mục tiêu 99.5% trong 28 ngày, latency tối đa 3,000 ms. CP1 baseline có P95 950 ms và TTFT P95 50 ms trên 10 response; 3,000 ms giữ khoảng đệm cho tail latency. Chi tiết: `config/slo.yaml`.
+- **Cách tính error budget:** 100% − 99.5% = 0.5%; trên 10,000 request trong 28 ngày, tối đa 50 request được phép lỗi hoặc vượt 3,000 ms.
+- **Ba alert và runbook tương ứng:** `HighLatencyP95` (>3,000 ms/5m), `RequestErrorsOrRetrievalFailures` (error >2% hoặc retrieval success <90%/5m), `DailyCostBudget` (daily cost >2.50 USD/10m). Cả ba gửi Slack `#k4-l3b-alerts`; runbook tại [docs/alerts.md](../docs/alerts.md).
 
 > Ví dụ cách viết error budget: "SLO 99.5% trong 28 ngày nghĩa là error budget 0.5%. Nếu workload có 10,000 request thì tối đa 50 request được phép lỗi hoặc chậm hơn ngưỡng SLO."
 
@@ -87,9 +89,10 @@
 
 ## 8. Giải thích và tự đánh giá
 
-- **Một quyết định kỹ thuật quan trọng và lý do:**
-- **Một lỗi/blocker đã gặp:**
-- **Cách tìm nguyên nhân và xử lý:**
+- **Một quyết định kỹ thuật quan trọng và lý do:** Dùng label thay vì hard-code prompt version để workload nhận đúng managed prompt và có thể rollback không đổi code.
+- **Một lỗi/blocker đã gặp:** Trace list endpoint cũ trả HTTP 410 cho tổ chức Langfuse mới.
+- **Cách tìm nguyên nhân và xử lý:** Chuyển sang Observations API v2, truy vấn bounded time range, rồi group observations theo `trace_id` để kiểm chứng cây span.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** 14 trace mới đã tắt capture input/output. Một số span cũ từ lần chạy trước vẫn lưu input/output đã scrub; API kiểm tra 72 observation cũ không phát hiện PII thô. Prompt label/version được lưu bằng API evidence; cần chụp thêm UI Langfuse nếu rubric yêu cầu ảnh màn hình riêng.
 - **Cách hiểu luồng Metrics → Logs → Traces:**
 - **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:**
 - **Điều quan trọng nhất đã học:**

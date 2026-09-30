@@ -1,0 +1,18 @@
+Langfuse project: day13-k4-l3b-2A202602901 (verified via configured API key).
+10 traces from scripts/load_test.py --concurrency 5. Every trace has root lab-agent-run with retrieval and generation children; inputs and outputs are not captured.
+req-02c56230 | trace_id=87ba14dfe4eff5788f78f9a48ea4e93f | prompt=day13-chat v1 label=production
+req-53a282ff | trace_id=0a155fbdc3e4ec14d3b6f78ad4db5ed5 | prompt=day13-chat v1 label=production
+req-6dca04cc | trace_id=df3046429a2a9d5b8c88d4b37c090b1f | prompt=day13-chat v1 label=production
+req-7e941274 | trace_id=27bc984f6ee58d226e1f604dad9922d7 | prompt=day13-chat v1 label=production
+req-8abab044 | trace_id=fdf851c9a10e1d919334bb87894f48bf | prompt=day13-chat v1 label=production
+req-d6cb2588 | trace_id=07f80d0c94aec49a5e41680f12bc4586 | prompt=day13-chat v1 label=production
+req-d74fa53d | trace_id=66e86cae515588009f02883fe4bbbf3a | prompt=day13-chat v1 label=production
+req-db74eb9d | trace_id=1289b4e2987fb771be216fb5e3d09546 | prompt=day13-chat v1 label=production
+req-e54e2d5e | trace_id=e32eaee1292465a1995e682f2b37c51a | prompt=day13-chat v1 label=production
+req-eeb372fa | trace_id=c99e5961511ac904611606ca0cee9127 | prompt=day13-chat v1 label=production
+
+Same-input prompt and production-label verification:
+req-c2a1a001 | trace_id=1a0f733cb5f64666c6f1fdcc7e8d5d1c | prompt=day13-chat v1 label=baseline
+req-c2a1a002 | trace_id=9bc83cd67744cf56680562e6431d829d | prompt=day13-chat v2 label=candidate
+req-c2a1a003 | trace_id=067e5d141b3d3d2f94324c88e4d9e7bd | prompt=day13-chat v2 label=production
+req-c2a1a004 | trace_id=9926caa500e35283f323ffd16ba6d106 | prompt=day13-chat v1 label=production
